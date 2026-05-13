@@ -1,7 +1,7 @@
 import streamlit as st
 import httpx
 import json
-import google.generativeai as genai
+from groq import Groq
 
 st.set_page_config(
     page_title="FactLayer – AI Fact Checker",
@@ -189,7 +189,7 @@ with st.sidebar:
 
 # ── Load keys from Streamlit Secrets ─────────────────────────────────────────
 try:
-    GEMINI_KEY = st.secrets["GEMINI_API_KEY"]
+    GROQ_KEY = st.secrets["GROQ_API_KEY"]
     SERPER_KEY = st.secrets["SERPER_API_KEY"]
 except KeyError:
     st.error(
@@ -199,8 +199,7 @@ except KeyError:
     st.stop()
 
 # Configure Gemini
-genai.configure(api_key=GEMINI_KEY)
-model = genai.GenerativeModel("gemini-2.0-flash")
+client = Groq(api_key=GROQ_KEY)
 
 # ── Helper functions ──────────────────────────────────────────────────────────
 
@@ -241,8 +240,12 @@ Document:
 
 Return only the JSON array, nothing else."""
 
-    response = model.generate_content(prompt)
-    raw = response.text.strip().replace("```json", "").replace("```", "").strip()
+    response = client.chat.completions.create(
+    model="llama-3.3-70b-versatile",
+    messages=[{"role": "user", "content": prompt}],
+    max_tokens=1000,
+)
+raw = response.choices[0].message.content.strip()...
     return json.loads(raw)
 
 
