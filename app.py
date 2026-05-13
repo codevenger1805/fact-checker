@@ -199,7 +199,7 @@ except KeyError:
     st.stop()
 
 # ── Groq model to use ────────────────────────────────────────────────────────
-GROQ_MODEL = "llama3-70b-8192"   # fast & capable; swap to "mixtral-8x7b-32768" if preferred
+GROQ_MODEL = "llama-3.3-70b-versatile"  # current recommended replacement for llama3-70b-8192
 
 # ── Helper functions ─────────────────────────────────────────────────────────
 
