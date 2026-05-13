@@ -245,7 +245,7 @@ Return only the JSON array, nothing else."""
     messages=[{"role": "user", "content": prompt}],
     max_tokens=1000,
 )
-raw = response.choices[0].message.content.strip()...
+raw = response.choices[0].message.content.strip()
     return json.loads(raw)
 
 
